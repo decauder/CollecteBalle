@@ -1,14 +1,11 @@
-GOALS (Srpint 2)
+GOALS (Sprint 2)
 
 
-FLORIAN
-
+FLORIAN: 
 Ajouter la "pelle" devant son robot 
 
-DANUT/JAKUB
-
+DANUT/JAKUB: 
 Obtenir les positions des balles sur le terrain (caméra zénithale)
 
-LAURENT
-
+LAURENT: 
 Bien se reposer
