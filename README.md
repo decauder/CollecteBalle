@@ -4,14 +4,14 @@
 
 ### Dépendences
 
-###### A compléter avec la/les dépendences.
-
 
 ### Démarrer la simulation
 
 ###### A compléter avec la/les commande(s) à lancer.
 ```bash
-# TODO
+cd <workspace ros>
+colcon build
+ros2 launch tennis_court tennis_court.launch.py
 ```
 
 
