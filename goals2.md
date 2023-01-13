@@ -1,8 +1,8 @@
-GOALS (Sprint 2)
+# Goals (Sprint 2)
 
 
-FLORIAN: 
+## Florian
 Ajouter la "pelle" devant son robot 
 
-DANUT/JAKUB: 
+## Danut/Jakub
 Obtenir les positions des balles sur le terrain (caméra zénithale)
