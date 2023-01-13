@@ -1,12 +1,5 @@
 # Tennis Ball Collector
 
-Membres :
-DECAUDAVEINE Ermance
-HODEK Jakub
-POP Danut
-JERRAM Florian
-DROUDUN Laurent
-
 ## Lancer la simulation
 
 ### Dépendences
@@ -26,7 +19,11 @@ DROUDUN Laurent
 
 ### Membres
 
-###### A compléter avec les membres du groupe.
+DECAUDAVEINE Ermance
+HODEK Jakub
+POP Danut
+JERRAM Florian
+DROUDUN Laurent
 
 
 ### Gestion de projet
