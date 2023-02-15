@@ -41,13 +41,26 @@ class ZenithCameraSubscriber(Node):
     
     # cv2.waitKey(1)
   
+
+def new_image_frame_received_callback(image, timeStamp):
+    """
+      Example callback to handle new incoming image from the camera
+
+      Input:
+        image: OpenCV image
+        timeStamp: time stamp of the image frame
+    """
+    cv2.imshow("Image window", image)
+    cv2.waitKey(1)
+    print("time: ",timeStamp)
+
 def main(args=None):
   
   # Initialize the rclpy library
   rclpy.init(args=args)
   
   # Create the node
-  image_subscriber = ZenithCameraSubscriber()
+  image_subscriber = ZenithCameraSubscriber( new_image_frame_received_callback )
   
   # Spin the node so the callback function is called.
   rclpy.spin(image_subscriber)

@@ -3,15 +3,15 @@
 
   <!-- Define robot constants -->
   <xacro:property name="base_width" value="0.31"/>
-  <xacro:property name="base_length" value="0.42"/>
+  <xacro:property name="base_length" value="0.34"/>
   <xacro:property name="base_height" value="0.18"/>
 
   <xacro:property name="pickside_width" value="0.05"/>
-  <xacro:property name="pickside_length" value="0.25"/>
+  <xacro:property name="pickside_length" value="0.15"/>
   <xacro:property name="pickside_height" value="0.12"/>
 
   <xacro:property name="pickback_width" value="0.45"/>
-  <xacro:property name="pickback_length" value="0.050"/>
+  <xacro:property name="pickback_length" value="0.01"/>
   <xacro:property name="pickback_height" value="0.12"/>
 
   <xacro:property name="pickside_ygap" value="0.03"/>
@@ -23,7 +23,12 @@
   <xacro:property name="wheel_zoff" value="0.05"/>
   <xacro:property name="wheel_xoff" value="0.12"/>
 
-  <xacro:property name="caster_xoff" value="0.14"/>
+  <xacro:property name="caster_xoff" value="0.1"/>
+  <!--Robot shape (base_length+pickback_length+pickside_length, pickback_width+pickside_width, wheel_radius+base_height)
+  Soit  (0.34+0.01+0.15, 0.45+0.05, 0.1+0.18) = (0.5, 0.5, 0.28) -->
+  <!-- Garde au sol (wheel_radius+wheel_zoff-pickback_height/2)
+  Soit  0.1+0.05+0.06 = 0.21m -->
+
 
   <!-- Define some commonly used intertial properties  -->
   <xacro:macro name="box_inertia" params="m w h d">
@@ -49,14 +54,15 @@
     </inertial>
   </xacro:macro>
   
+
   <!-- Robot Base -->
   <link name="base_link">
     <visual>
       <geometry>
         <box size="${base_length} ${base_width} ${base_height}"/>
       </geometry>
-      <material name="Cyan">
-        <color rgba="0 1.0 1.0 1.0"/>
+      <material name="Red">
+        <ambiant>1.0 0 0 1.0</ambiant>
       </material>
     </visual>
 
@@ -66,9 +72,16 @@
       </geometry>
     </collision>
 
-    <xacro:box_inertia m="15" w="${base_width}" d="${base_length}" h="${base_height}"/>
+    <xacro:box_inertia m="10" w="${base_width}" d="${base_length}" h="${base_height}"/>
   </link>
   
+  <gazebo reference="base_link">
+    <material>Gazebo/Red</material>
+    <mass value="10"/>
+    <pose>-5 -5 1</pose>
+  </gazebo>
+
+
    <!-- Robot Footprint -->
   <link name="base_footprint">
   	<xacro:box_inertia m="0" w="0" d="0" h="0"/>
@@ -77,8 +90,9 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_link"/>
     <child link="base_footprint"/>
-    <origin xyz="0.0 0.0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
+    <origin xyz="0 0 ${-(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
   </joint>
+
 
   <!-- Wheels -->
   <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
@@ -88,8 +102,8 @@
         <geometry>
             <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
-        <material name="Gray">
-          <color rgba="0.5 0.5 0.5 1.0"/>
+        <material name="Green">
+          <color rgba="0 1.0 0 1.0"/>
         </material>
       </visual>
 
@@ -98,9 +112,24 @@
         <geometry>
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
+<!--         <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <slip1>1.0</slip1>
+              <slip2>1.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+        </surface> -->
       </collision>
 
-      <xacro:cylinder_inertia m="0.5" r="${wheel_radius}" h="${wheel_width}"/>
+      <xacro:cylinder_inertia m="2" r="${wheel_radius}" h="${wheel_width}"/>
     </link>
 
     <joint name="${prefix}_joint" type="continuous">
@@ -114,13 +143,23 @@
   <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
   <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="-1" />
 
+  <gazebo reference="drivewhl_l_link">
+    <material>Gazebo/Green</material>
+    <mass value="2"/>
+  </gazebo>
+  <gazebo reference="drivewhl_r_link">
+    <material>Gazebo/Green</material>
+    <mass value="2"/>
+  </gazebo>
+
+
   <link name="front_caster">
     <visual>
       <geometry>
         <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
       </geometry>
-      <material name="Cyan">
-        <color rgba="0 1.0 1.0 1.0"/>
+      <material name="Green">
+        <color rgba="0 1.0 0 1.0"/>
       </material>
     </visual>
 
@@ -129,9 +168,24 @@
       <geometry>
         <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
       </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>0</mu>
+            <mu2>0</mu2>
+            <slip1>1.0</slip1>
+            <slip2>1.0</slip2>
+          </ode>
+        </friction>
+<!--         <contact>
+          <ode>
+            <min_depth>0.001</min_depth>
+          </ode>
+        </contact> -->
+      </surface>
     </collision>
 
-    <xacro:sphere_inertia m="0.5" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
+    <xacro:sphere_inertia m="0" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
   </link>
 
   <joint name="caster_joint" type="fixed">
@@ -139,6 +193,11 @@
     <child link="front_caster"/>
     <origin xyz="${caster_xoff} 0.0 ${-(base_height/2)}" rpy="0 0 0"/>
   </joint>
+
+  <gazebo reference="front_caster">
+    <material>Gazebo/Green</material>
+    <mass value="1"/>
+  </gazebo>
 
 
   <!-- Ramasseur de balles -->
@@ -150,7 +209,7 @@
       <box size="${pickside_length} ${pickside_width} ${pickside_height}"/>
     </geometry>
     <material name="Red">
-      <color rgba="0.5 0.5 0.5 1.0"/>
+      <color rgba="1.0 0 0 1.0"/>
     </material>
     </visual>
 
@@ -161,7 +220,7 @@
     </geometry>
     </collision>
 
-    <xacro:box_inertia m="2" w="${pickside_width}" d="${pickside_length}" h="${pickside_height}"/>
+    <xacro:box_inertia m="0.5" w="${pickside_width}" d="${pickside_length}" h="${pickside_height}"/>
   </link>
 
   <joint name="${prefix}_joint" type="fixed">
@@ -175,6 +234,14 @@
   <xacro:pickside prefix="pickside_l" x_reflect="-1" y_reflect="1" />
   <xacro:pickside prefix="pickside_r" x_reflect="-1" y_reflect="-1" />
 
+  <gazebo reference="pickside_l_link">
+    <material>Gazebo/Black</material>
+    <mass value="0.5"/>
+  </gazebo>
+  <gazebo reference="pickside_r_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
 
   <link name="pickback">
 	  <visual>
@@ -182,7 +249,7 @@
 	      <box size="${pickback_length} ${pickback_width} ${pickback_height}"/>
 	    </geometry>
 	    <material name="Black">
-	    	<color rgba="0.5 0.5 0.5 1.0"/>
+	    	<color rgba="1.0 0 0 1.0"/>
 	    </material>
 	  </visual>
 
@@ -193,7 +260,7 @@
 	    </geometry>
 	  </collision>
 
-	  <xacro:box_inertia m="3" w="${pickback_width}" d="${pickback_length}" h="${pickback_height}"/>
+	  <xacro:box_inertia m="0.5" w="${pickback_width}" d="${pickback_length}" h="${pickback_height}"/>
   </link>
 
   <joint name="pickback_joint" type="fixed">
@@ -202,6 +269,11 @@
   	<origin xyz="${base_length/2+pickback_length/2} 0 ${pick_zoff}" rpy="0 0 0"/>
   	<axis xyz="0 1 0"/>
   </joint>
+
+  <gazebo reference="pickback">
+    <material>Gazebo/Black</material>
+    <mass value="0.5"/>
+  </gazebo>
 
 
   <link name="imu_link">
@@ -301,6 +373,9 @@
         <namespace>/demo</namespace>
       </ros>
 
+      <alwaysOn>true</alwaysOn>
+      <update_rate>20</update_rate>
+
       <!-- wheels -->
       <left_joint>drivewhl_l_joint</left_joint>
       <right_joint>drivewhl_r_joint</right_joint>
@@ -318,73 +393,16 @@
       <publish_odom_tf>false</publish_odom_tf>
       <publish_wheel_tf>true</publish_wheel_tf>
 
+      <odometry_topic>odom</odometry_topic>
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_link</robot_base_frame>
+
+      <!-- commands -->
+      <torque>20</torque>
+      <commandTopic>cmd_vel</commandTopic>
     </plugin>
   </gazebo>
 
- <link name="lidar_link">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.125"/>
-      <inertia ixx="0.001"  ixy="0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
-    </inertial>
-
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-         <cylinder radius="0.0508" length="0.055"/>
-      </geometry>
-    </collision>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-         <cylinder radius="0.0508" length="0.055"/>
-      </geometry>
-    </visual>
-  </link>
-    
-  <joint name="lidar_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="lidar_link"/>
-    <origin xyz="0 0 0.12" rpy="0 0 0"/>
-  </joint>
-    
-  <gazebo reference="lidar_link">
-    <sensor name="lidar" type="ray">
-      <always_on>true</always_on>
-      <visualize>true</visualize>
-      <update_rate>5</update_rate>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>360</samples>
-            <resolution>1.000000</resolution>
-            <min_angle>0.000000</min_angle>
-            <max_angle>6.280000</max_angle>
-          </horizontal>
-        </scan>
-        <range>
-          <min>0.120000</min>
-          <max>3.5</max>
-          <resolution>0.015000</resolution>
-        </range>
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.01</stddev>
-        </noise>
-      </ray>
-      <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
-        <ros>
-          <remapping>~/out:=scan</remapping>
-        </ros>
-        <output_type>sensor_msgs/LaserScan</output_type>
-        <frame_name>lidar_link</frame_name>
-      </plugin>
-    </sensor>
-  </gazebo>
   
   <link name="camera_link">
     <visual>

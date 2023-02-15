@@ -11,11 +11,12 @@ from launch_ros.actions import Node
 
 ROS_DISTRO_ELOQUENT = "eloquent"
 ROS_DISTRO_FOXY = "foxy"
+ROS_DISTRO_HUMBLE = "humble"
 ROS_DISTRO = os.environ.get("ROS_DISTRO")
 
 
 def generate_launch_description():
-    executable = "executable" if ROS_DISTRO == ROS_DISTRO_FOXY else "node_executable"
+    executable = "executable" if (ROS_DISTRO == ROS_DISTRO_FOXY) or (ROS_DISTRO == ROS_DISTRO_HUMBLE) else "node_executable"
     pkg_share = get_package_share_directory("tennis_court")
     gazebo_ros_share = get_package_share_directory("gazebo_ros")
     model_path = os.path.join(pkg_share, 'urdf/fledj_bot_description.urdf')
