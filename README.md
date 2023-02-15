@@ -1,17 +1,8 @@
 # Tennis Ball Collector
 
-Membres :
-DECAUDAVEINE Ermance
-HODEK Jakub
-POP Danut
-JERRAM Florian
-DROUDUN Laurent
-
 ## Lancer la simulation
 
 ### Dépendences
-
-###### A compléter avec la/les dépendences.
 
 
 ### Démarrer la simulation
@@ -21,6 +12,7 @@ DROUDUN Laurent
     colcon build
     source ./install/setup.sh
     ros2 launch tennis_court tennis_court.launch.py
+
 ```
 
 
@@ -28,15 +20,18 @@ DROUDUN Laurent
 
 ### Membres
 
-- Florian
-- Laurent
-- Ermance
-- Danut
-- Jakub
+DECAUDAVEINE Ermance
+HODEK Jakub
+POP Danut
+JERRAM Florian
+DROUDUN Laurent
+
 
 ### Gestion de projet
 
-- [Taiga](https://tree.taiga.io/project/xqubics-fledj-inge/)
+Lien du projet Taiga
+[https://tree.taiga.io/project/xqubics-fledj-inge/timeline](https://tree.taiga.io/project/xqubics-fledj-inge/timeline)
+>>>>>>> 49c523a51b655a2b9901e50889df059991830057
 
 
 
