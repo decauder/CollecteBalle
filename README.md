@@ -31,7 +31,6 @@ DROUDUN Laurent
 
 Lien du projet Taiga
 [https://tree.taiga.io/project/xqubics-fledj-inge/timeline](https://tree.taiga.io/project/xqubics-fledj-inge/timeline)
->>>>>>> 49c523a51b655a2b9901e50889df059991830057
 
 
 
