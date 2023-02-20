@@ -69,6 +69,17 @@ for `top_camera` pkg:
     sudo apt install ros-foxy-vision-opencv ros-foxy-cv-bridge
     rosdep install -i --from-path src --rosdistro foxy -y -r
 ```
+<<<<<<< HEAD
 
 <!-- sudo apt install ros-humble-ament-pycodestyle -->
 
+=======
+<!-- sudo apt install ros-humble-ament-pycodestyle -->
+
+
+### Testing
+```sh
+    make test
+```
+*Note: You should be in the root folder, where the Makefile is.*
+>>>>>>> 3a5b2ce1ce21cf4130dea111dd4c2efd7fa34a2b

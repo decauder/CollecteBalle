@@ -6,6 +6,7 @@ from inputs import get_gamepad
 import math
 import threading
 
+
 class XboxController(object):
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
@@ -32,14 +33,17 @@ class XboxController(object):
         self.UpDPad = 0
         self.DownDPad = 0
 
-        self._monitor_thread = threading.Thread(target=self._monitor_controller, args=())
+        self._monitor_thread = threading.Thread(
+            target=self._monitor_controller, args=())
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
-
-    def read(self): # return the buttons/triggers that you care about in this methode
-        return [self.LeftJoystickX,self.LeftTrigger,self.RightTrigger,self.A]
-
+    def read(
+        self
+    ):  # return the buttons/triggers that you care about in this methode
+        return [
+            self.LeftJoystickX, self.LeftTrigger, self.RightTrigger, self.A
+        ]
 
     def _monitor_controller(self):
         while True:
@@ -47,18 +51,20 @@ class XboxController(object):
             for event in events:
                 if event.code == 'ABS_Y':
                     # self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
-                    self.LeftJoystickY = (event.state-129)/129 # normalize between -1 and 1
+                    self.LeftJoystickY = (
+                        event.state - 129) / 129  # normalize between -1 and 1
                 elif event.code == 'ABS_X':
                     # self.LeftJoystickX = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
-                    self.LeftJoystickX = (event.state-129)/129 # normalize between -1 and 1
+                    self.LeftJoystickX = (
+                        event.state - 129) / 129  # normalize between -1 and 1
                 elif event.code == 'ABS_RY':
-                    self.RightJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
+                    self.RightJoystickY = event.state / XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == 'ABS_RX':
-                    self.RightJoystickX = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
+                    self.RightJoystickX = event.state / XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == 'ABS_Z':
-                    self.LeftTrigger = event.state / XboxController.MAX_TRIG_VAL # normalize between 0 and 1
+                    self.LeftTrigger = event.state / XboxController.MAX_TRIG_VAL  # normalize between 0 and 1
                 elif event.code == 'ABS_RZ':
-                    self.RightTrigger = event.state / XboxController.MAX_TRIG_VAL # normalize between 0 and 1
+                    self.RightTrigger = event.state / XboxController.MAX_TRIG_VAL  # normalize between 0 and 1
                 elif event.code == 'BTN_TL':
                     self.LeftBumper = event.state
                 elif event.code == 'BTN_TR':
@@ -88,30 +94,33 @@ class XboxController(object):
                 elif event.code == 'BTN_TRIGGER_HAPPY4':
                     self.DownDPad = event.state
 
+
 class MinimalPublisher(Node):
 
     def __init__(self):
         super().__init__('minimal_publisher')
         self.publisher_ = self.create_publisher(Twist, 'demo/cmd_vel', 10)
         timer_period = 0.5  # seconds
-        self.joy = XboxController() #To control the robot using a game controller
+        self.joy = XboxController(
+        )  # To control the robot using a game controller
 
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
     def timer_callback(self):
-        LeftJoystickX,LeftTrigger,RightTrigger,A=self.joy.read()
+        LeftJoystickX, LeftTrigger, RightTrigger, A = self.joy.read()
         msg = Twist()
-        msg.linear.x=(float(RightTrigger)-float(LeftTrigger))/8
-        msg.linear.y=0.
-        msg.linear.z=0.
+        msg.linear.x = (float(RightTrigger) - float(LeftTrigger)) / 8
+        msg.linear.y = 0.
+        msg.linear.z = 0.
 
-        msg.angular.x=0.
-        msg.angular.y=0.
-        msg.angular.z=-float(LeftJoystickX)
+        msg.angular.x = 0.
+        msg.angular.y = 0.
+        msg.angular.z = -float(LeftJoystickX)
 
         self.publisher_.publish(msg)
-        self.get_logger().info('LeftJoystickX,LeftTrigger,RightTrigger,A: "%s"' % self.joy.read())
+        self.get_logger().info(
+            'LeftJoystickX,LeftTrigger,RightTrigger,A: "%s"' % self.joy.read())
         self.i += 1
 
 
@@ -121,7 +130,7 @@ def main(args=None):
     minimal_publisher = MinimalPublisher()
 
     rclpy.spin(minimal_publisher)
-    
+
     minimal_publisher.destroy_node()
     rclpy.shutdown()
 

@@ -1,4 +1,4 @@
-.PHONY: prerun run
+.PHONY: prerun run test
 
 .ONESHELL:
 
@@ -18,3 +18,8 @@ run_court: prerun
 
 run_camera: prerun
 	ros2 run top_camera zenith_camera_subscriber
+
+test:
+	cd ws; colcon test --packages-select top_camera robot_control --event-handlers console_cohesion+
+	# cd ws; colcon test --event-handlers console_cohesion+
+	

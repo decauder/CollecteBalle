@@ -1,7 +1,7 @@
 from ament_pycodestyle.main import generate_pycodestyle_report
 import pytest
 
-# RUN directly: python3 -m pytest ./src/top_camera/test/test_pep8_codestyle.py; but you need to define paths as ['./src/top_camera']
+# RUN directly: python3 -m pytest ./src/robot_control/test/test_pep8_codestyle.py; but you need to define paths as ['./src/robot_control']
 
 
 @pytest.mark.linter
