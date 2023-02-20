@@ -110,7 +110,7 @@ class MinimalPublisher(Node):
     def timer_callback(self):
         LeftJoystickX, LeftTrigger, RightTrigger, A = self.joy.read()
         msg = Twist()
-        msg.linear.x = (float(RightTrigger) - float(LeftTrigger)) / 8
+        msg.linear.x = 6*(float(RightTrigger) - float(LeftTrigger)) / 8
         msg.linear.y = 0.
         msg.linear.z = 0.
 

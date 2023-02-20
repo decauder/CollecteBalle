@@ -32,20 +32,26 @@ class TerrainBalls:
         frame_HSV = cv.cvtColor(self.terrain, cv.COLOR_BGR2HSV)
         frame_threshold = cv.inRange(frame_HSV, (24, 1, 1), (51, 255, 255))
         ret,thresh = cv.threshold(frame_threshold,127,255,cv.THRESH_BINARY)
-        contours,h = cv.findContours(thresh,cv.RETR_CCOMP,cv.CHAIN_APPROX_NONE)
+        kernel=np.ones((3,3))
+        opening = cv.morphologyEx(thresh, cv.MORPH_OPEN, kernel)
+        cv2.imshow('Test',opening)
+        cv2.waitKey(1)
+        contours,h = cv.findContours(opening,cv.RETR_CCOMP,cv.CHAIN_APPROX_NONE)
         ball_centers=[]
         for cnt in contours:
             (cx, cy), radius = cv.minEnclosingCircle(cnt)
+            # if radius>2.5:
             ball_centers.append([int(cx),int(cy)])
             cv.drawContours(self.terrain, [cnt], 0, (0, 0, 255), -1)
         n=len(ball_centers)
-        for i in range(self.nb_balls):
-            print('boucle')
-            k=self.findMatch(self.balls[i],ball_centers)
-            if k!=-1:
-                self.balls[i].get_new_position(ball_centers[k])
-                ball_centers.pop(k)
-        if self.nb_balls<n:
+        if self.nb_balls==n:
+            for i in range(self.nb_balls):
+                print('boucle')
+                k=self.findMatch(self.balls[i],ball_centers)
+                if k!=-1:
+                    self.balls[i].get_new_position(ball_centers[k])
+                    ball_centers.pop(k)
+        elif self.nb_balls<n:
             for j in range(len(ball_centers)):
                 print('new_ball')
                 self.nb_balls=self.nb_balls+1
