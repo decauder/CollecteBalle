@@ -53,7 +53,7 @@
       <inertia ixx="${(2/5) * m * (r*r)}" ixy="0.0" ixz="0.0" iyy="${(2/5) * m * (r*r)}" iyz="0.0" izz="${(2/5) * m * (r*r)}"/>
     </inertial>
   </xacro:macro>
-  
+
 
   <!-- Robot Base -->
   <link name="base_link">
@@ -74,6 +74,7 @@
 
     <xacro:box_inertia m="10" w="${base_width}" d="${base_length}" h="${base_height}"/>
   </link>
+
   
   <gazebo reference="base_link">
     <material>Gazebo/Red</material>
@@ -82,7 +83,7 @@
   </gazebo>
 
 
-   <!-- Robot Footprint -->
+  <!-- Robot Footprint -->
   <link name="base_footprint">
   	<xacro:box_inertia m="0" w="0" d="0" h="0"/>
   </link>
@@ -112,7 +113,7 @@
         <geometry>
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
-<!--         <surface>
+        <!-- <surface>
           <friction>
             <ode>
               <mu>0</mu>
@@ -135,7 +136,7 @@
     <joint name="${prefix}_joint" type="continuous">
       <parent link="base_link"/>
       <child link="${prefix}_link"/>
-      <origin xyz="${x_reflect*wheel_xoff} ${y_reflect*(base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>
+      <origin xyz="${x_reflect*wheel_xoff} ${y_reflect*(1.1*base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
     </joint>
   </xacro:macro>
@@ -147,6 +148,8 @@
     <material>Gazebo/Green</material>
     <mass value="2"/>
   </gazebo>
+
+
   <gazebo reference="drivewhl_r_link">
     <material>Gazebo/Green</material>
     <mass value="2"/>
@@ -191,7 +194,7 @@
   <joint name="caster_joint" type="fixed">
     <parent link="base_link"/>
     <child link="front_caster"/>
-    <origin xyz="${caster_xoff} 0.0 ${-(base_height/2)}" rpy="0 0 0"/>
+    <origin xyz="${caster_xoff} 0.0 ${-base_height/2}" rpy="0 0 0"/>
   </joint>
 
   <gazebo reference="front_caster">
