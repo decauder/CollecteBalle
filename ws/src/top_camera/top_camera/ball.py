@@ -57,6 +57,8 @@ class TerrainBalls:
         frame_HSV = cv.cvtColor(self.terrain, cv.COLOR_BGR2HSV)
         frame_threshold = cv.inRange(frame_HSV, (24, 1, 1), (51, 255, 255))
         ret, thresh = cv.threshold(frame_threshold, 127, 255, cv.THRESH_BINARY)
+        kernel=np.ones((3,3))
+        opening = cv.morphologyEx(thresh, cv.MORPH_OPEN, kernel)
         contours, h = cv.findContours(thresh, cv.RETR_CCOMP,
                                       cv.CHAIN_APPROX_NONE)
         ball_centers = []
@@ -75,13 +77,10 @@ class TerrainBalls:
             for j in range(len(ball_centers)):
                 # print('new_ball')
                 self.nb_balls = self.nb_balls + 1
-                self.balls.append(
-                    Ball(self.nb_balls, self.time, ball_centers[j]))
+                self.balls.append(Ball(self.nb_balls, self.time, ball_centers[j]))
         for b in self.balls:
             b.set_time(self.time)
-            cv2.putText(self.terrain, str(b.id), tuple(b.position),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 1,
-                        cv2.LINE_AA)
+            cv2.putText(self.terrain, str(b.id), tuple(b.position),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 1,cv2.LINE_AA)
 
             #  for score testing:
             # if i == 0:

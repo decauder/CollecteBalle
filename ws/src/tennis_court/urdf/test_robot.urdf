@@ -135,9 +135,9 @@
     <!-- Define the link -->
     <link name="marker_${prefix}_link">
       <visual>
-        <origin rpy="0 0 0" xyz="${x_pos} 0 ${base_height/2}"/>
+        <origin rpy="0 0 0" xyz="${x_pos} 0 0.1"/>
         <geometry>
-          <cylinder radius="0.01" length="0.025"/>
+          <sphere radius="0.025"/>
         </geometry>
       </visual>
     </link>
@@ -154,7 +154,9 @@
 
   </xacro:macro>
 
-  <xacro:marker prefix="1" x_pos="-0.1*base_length" color="Green"/>
-  <xacro:marker prefix="2" x_pos="0.1*base_length" color="Blue"/>
+  <!-- <xacro:marker prefix="1" x_pos="${-0.1*${base_length}}" color="Green"/>
+  <xacro:marker prefix="2" x_pos="${0.1*${base_length}}" color="Blue"/> -->
+  <xacro:marker prefix="1" x_pos="-0.1" color="Red"/>
+  <xacro:marker prefix="2" x_pos="0.1" color="Blue"/>
 
 </robot>

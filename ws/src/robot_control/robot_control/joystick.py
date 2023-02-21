@@ -50,13 +50,11 @@ class XboxController(object):
             events = get_gamepad()
             for event in events:
                 if event.code == 'ABS_Y':
-                    # self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
-                    self.LeftJoystickY = (
-                        event.state - 129) / 129  # normalize between -1 and 1
+                    self.LeftJoystickY = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
+                    # self.LeftJoystickY = (event.state - 129) / 129  # normalize between -1 and 1
                 elif event.code == 'ABS_X':
-                    # self.LeftJoystickX = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
-                    self.LeftJoystickX = (
-                        event.state - 129) / 129  # normalize between -1 and 1
+                    self.LeftJoystickX = event.state / XboxController.MAX_JOY_VAL # normalize between -1 and 1
+                    # self.LeftJoystickX = (event.state - 129) / 129  # normalize between -1 and 1
                 elif event.code == 'ABS_RY':
                     self.RightJoystickY = event.state / XboxController.MAX_JOY_VAL  # normalize between -1 and 1
                 elif event.code == 'ABS_RX':

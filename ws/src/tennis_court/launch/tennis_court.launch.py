@@ -20,8 +20,8 @@ def generate_launch_description():
         ROS_DISTRO == ROS_DISTRO_HUMBLE) else "node_executable"
     pkg_share = get_package_share_directory("tennis_court")
     gazebo_ros_share = get_package_share_directory("gazebo_ros")
-    # model_path = os.path.join(pkg_share, 'urdf/fledj_bot_description.urdf')
-    model_path = os.path.join(pkg_share, 'urdf/test_robot.urdf')
+    model_path = os.path.join(pkg_share, 'urdf/fledj_bot_description.urdf')
+    # model_path = os.path.join(pkg_share, 'urdf/test_robot.urdf')
     world_path = os.path.join(pkg_share, 'worlds/court.world')
 
     # Gazebo Server
@@ -92,13 +92,13 @@ def generate_launch_description():
         DeclareLaunchArgument(name="rviz", default_value="false"),
         DeclareLaunchArgument(name="manager", default_value="true"),
         DeclareLaunchArgument(name='model', default_value=model_path),
-        ExecuteProcess(cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so',
-                       '-s', 'libgazebo_ros_factory.so', world_path], output='screen'),
+        # ExecuteProcess(cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so',
+        #                '-s', 'libgazebo_ros_factory.so', world_path], output='screen'),
         gzserver_launch,
         gzclient_launch,
+        robot_state_publisher_node,
+        spawn_entity,
         static_tf_node,
         ball_manager_node,
-        rviz_node,
-        robot_state_publisher_node,
-        spawn_entity
+        rviz_node
     ])

@@ -44,22 +44,22 @@ class TerrainBalls:
             ball_centers.append([int(cx),int(cy)])
             cv.drawContours(self.terrain, [cnt], 0, (0, 0, 255), -1)
         n=len(ball_centers)
-        if self.nb_balls==n:
-            for i in range(self.nb_balls):
-                print('boucle')
-                k=self.findMatch(self.balls[i],ball_centers)
-                if k!=-1:
-                    self.balls[i].get_new_position(ball_centers[k])
-                    ball_centers.pop(k)
-        elif self.nb_balls<n:
+        print(n)
+        # if self.nb_balls==n:
+        for i in range(self.nb_balls):
+            # print('boucle')
+            k=self.findMatch(self.balls[i],ball_centers)
+            if k!=-1:
+                self.balls[i].get_new_position(ball_centers[k])
+                ball_centers.pop(k)
+        if self.nb_balls<n:
             for j in range(len(ball_centers)):
                 print('new_ball')
                 self.nb_balls=self.nb_balls+1
                 self.balls.append(Ball(self.nb_balls,self.time,ball_centers[j]))
         for b in self.balls:
             b.get_new_time(self.time)
-            cv2.putText(self.terrain, str(b.id), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,
-            1, (255,255,0), 1, cv2.LINE_AA)
+            cv2.putText(self.terrain, str(b.id), tuple(b.position), cv2.FONT_HERSHEY_SIMPLEX,1, (255,255,0), 1, cv2.LINE_AA)
 
     def findMatch(self,ball,ball_centers):
         # match=False
@@ -72,7 +72,7 @@ class TerrainBalls:
             return -1
         else: 
             min=5000
-            print(len(ball_centers))
+            # print(len(ball_centers))
             for i in range(len(ball_centers)):
                 n=np.sqrt((ball_centers[i][0]-ball.position[0])**2+(ball_centers[i][1]-ball.position[1])**2)
                 if n<min:
