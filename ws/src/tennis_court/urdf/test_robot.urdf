@@ -154,9 +154,9 @@
 
   </xacro:macro>
 
-  <!-- <xacro:marker prefix="1" x_pos="${-0.1*${base_length}}" color="Green"/>
+  <!-- <xacro:marker prefix="1" x_pos="${-0.1*${base_length}}" color="Red"/>
   <xacro:marker prefix="2" x_pos="${0.1*${base_length}}" color="Blue"/> -->
-  <xacro:marker prefix="1" x_pos="-0.1" color="Red"/>
-  <xacro:marker prefix="2" x_pos="0.1" color="Blue"/>
+  <xacro:marker prefix="1" x_pos="-0.1" color="Blue"/>
+  <xacro:marker prefix="2" x_pos="0.1" color="Purple"/>
 
 </robot>

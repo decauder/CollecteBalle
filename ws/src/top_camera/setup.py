@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'zenith_camera_subscriber = top_camera.zenith_camera_subscriber:main',
+            'robot_detector_publisher = top_camera.robot_detector_publisher:main'
         ],
     },
 )

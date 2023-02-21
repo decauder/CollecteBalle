@@ -22,11 +22,11 @@ class RobotDetector(Node):
     def _camera_data_updated_callback(self, img, timestamp):
         self._terrain = img
 
-        # # GUI for finding the correct HSV range
-        # if (self.hsvFinder is None):
+        # #  GUI for finding the correct HSV range
+        # if (self._hsvFinder is None):
         #     # Create an instance of the ColorThreshold class with the image
-        #     self.hsvFinder = HSVRangeFinder(self.terrain)
-        #     self.hsvFinder.run()
+        #     self._hsvFinder = HSVRangeFinder(self._terrain)
+        #     self._hsvFinder.run()
 
         #  Detect the markers on the robot
         blue_marker = [
@@ -37,12 +37,17 @@ class RobotDetector(Node):
         #     (39, 0, 77),
         #     (63, 255, 149)
         # ]
-        red_marker = [
-            (0, 35, 67),
-            (10, 255, 202)
+        # red_marker = [
+        #     (0, 35, 67),
+        #     (10, 255, 202)
+        # ]
+        purple_marker = [
+            (130, 27, 70),
+            (168, 255, 199)
         ]
-        front_m_pos = self._detect_marker(blue_marker[0], blue_marker[1])
-        rear_m_pos = self._detect_marker(red_marker[0], red_marker[1])
+
+        front_m_pos = self._detect_marker(purple_marker[0], purple_marker[1])
+        rear_m_pos = self._detect_marker(blue_marker[0], blue_marker[1])
 
         if self.__debug:
             print("Front marker: ", front_m_pos)
@@ -90,10 +95,14 @@ class RobotDetector(Node):
         return self._position
 
 
+def dummy_cb(position, heading, timestamp):
+    pass
+
+
 def main(args=None):
     rclpy.init(args=args)
 
-    rd = RobotDetector(debug=True)
+    rd = RobotDetector(dummy_cb, debug=True, display_camera=True)
     rd.Camera.destroy_node()
 
 
