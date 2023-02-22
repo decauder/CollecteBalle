@@ -84,13 +84,6 @@ class TerrainBalls:
         if self.nb_balls < n:
             for j in range(len(ball_centers)):
                 # print('new_ball')
-<<<<<<< HEAD
-                self.nb_balls = self.nb_balls + 1
-                self.balls.append(Ball(self.nb_balls, self.time, ball_centers[j]))
-        for b in self.balls:
-            b.set_time(self.time)
-            cv2.putText(self.terrain, str(b.id), tuple(b.position),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 1,cv2.LINE_AA)
-=======
                 self.nb_balls = self.nb_balls+1
                 self.balls.append(
                     Ball(self.nb_balls, self.time, ball_centers[j]))
@@ -104,10 +97,9 @@ class TerrainBalls:
             for i in range(len(self.path_.path)-1) :
                 cv2.line(self.terrain,self.path_.xy_to_pixel(*self.path_.path[i]),self.path_.xy_to_pixel(*self.path_.path[i+1]),(255,0,0),2)
         
+        
             cv.putText(terrain, str(b.id), tuple(b.position), cv.FONT_HERSHEY_SIMPLEX,
                         1, (255, 255, 0), 1, cv.LINE_AA)
->>>>>>> 3a4a1611e669145f039f822e694b99ab9b91c45a
-
             #  for score testing:
             # if i == 0:
             #     self.score_history = np.vstack([
