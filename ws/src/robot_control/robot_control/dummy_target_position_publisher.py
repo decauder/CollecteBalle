@@ -4,6 +4,9 @@ from geometry_msgs.msg import Pose2D
 
 
 class DummyTargetPositionPublisher(Node):
+    """
+        Dummy target position publisher - publishes a target position every 0.5 seconds
+    """
 
     def __init__(self):
         super().__init__('dummy_target_position_publisher')
@@ -13,8 +16,8 @@ class DummyTargetPositionPublisher(Node):
 
     def _timer_callback(self):
         msg = Pose2D()
-        msg.x = 300.
-        msg.y = 300.
+        msg.x = 850.  # set the target position here [in px]
+        msg.y = 300.  # and here [in px]
         msg.theta = 0.
 
         self._publisher.publish(msg)

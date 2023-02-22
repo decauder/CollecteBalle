@@ -1,13 +1,14 @@
 # Tennis Ball Collector
 
+[![collecte-balle-ros-foxy](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml/badge.svg)](https://github.com/FLEDJ-Inge/CollecteBalle/actions/workflows/collecte-balle-ros-foxy.yml)
+
 ## Lancer la simulation
 
 ### Dépendences
 
 
 ### Démarrer la simulation
-
-###### A compléter avec la/les commande(s) à lancer.
+Dans la racine du workspace (ws), lancer:
 ```bash
     colcon build
     source ./install/setup.sh
@@ -37,17 +38,38 @@ Lien du projet Taiga
 ## Structure du dépôt
 
 Ce dépôt doit être cloné dans le dossier `src` d'un workspace ROS 2.
+Le dossier ws/src contient trois packages : tennis_court, top_camera et robot_control
 
 ### Package `tennis_court`
 
 Le dossier `ws/src/tennis_court` est un package ROS contenant le monde dans lequel le robot ramasseur de balle devra évoluer ainsi qu'un script permettant de faire apparaître des balles dans la simulation.
 Ce package ne doit pas être modifié.
-Consulter le [README](tennis_court/README.md) du package pour plus d'informations.
+Consulter le [README](ws/src/tennis_court/README.md) du package pour plus d'informations.
 
 ### Package `top_camera`
 
 Le dossier `ws/src/top_camera` est un package ROS contenant le processing des données de la `zenith_camera` - la caméra placée au dessus du terrain de tennis.
-Ce package provide des positions de balle et de robot.
+Les codes qu'elles contient permettent donc, en s'abonnant à la caméra, de détecter le robot et les balles, et ainsi de detreminer le chemin à suivre.
+
+#### Subscribers:
+- **`zenith_camera/image_raw`**: raw camera image qui viens de package `tennis_court` (`sensor_msgs.msg.Image`)
+
+#### Publishers:
+- **`robot/target_position`**: position destinée du robot  (`geometry_msgs.msg.Pose2D`)
+- **`robot/position`**: position vrai du robot (detecté par camera) (`geometry_msgs.msg.Pose2D`)
+
+### Package 'robot_control'
+
+Le dossier 'ws/src/robot_control' est un package ROS contenant les codes de control du robot.
+
+#### Subscribers:
+- **`robot/target_position`**: position destinée du robot  (`geometry_msgs.msg.Pose2D`)
+- **`robot/position`**: position vrai du robot (detecté par camera) (`geometry_msgs.msg.Pose2D`)
+
+#### Publishers:
+- **`demo/cmd_vel`**: commande de vitesse (linéaire et rotationnel) du robot (`geometry_msgs.msg.Twist`) 
+- *(dummy_target_position, qui publie vers `robot/target_position` pour tester le robot_control)*
+
 
 ### Documents
 
@@ -63,23 +85,48 @@ Le dossier `reports` doit être rempli avec les rapports d'[objectifs](../report
 
 _________
 
-### Installs
-for `top_camera` pkg:
+### Installer
+Pour le package 'top_camera':
 ```sh
     sudo apt install ros-foxy-vision-opencv ros-foxy-cv-bridge
     rosdep install -i --from-path src --rosdistro foxy -y -r
 ```
-<<<<<<< HEAD
 
 <!-- sudo apt install ros-humble-ament-pycodestyle -->
 
-=======
+
 <!-- sudo apt install ros-humble-ament-pycodestyle -->
 
+### Build
+```sh
+    colcon build
+```
 
-### Testing
+### Tester
 ```sh
     make test
 ```
 *Note: You should be in the root folder, where the Makefile is.*
->>>>>>> 3a5b2ce1ce21cf4130dea111dd4c2efd7fa34a2b
+
+
+#### Code style
+Nous utilisons [autopep8](https://pypi.org/project/autopep8/) pour vérifier et réparer erreurs de code style.
+
+En cas tu veux vérifier le code style d'un fichier, tu peux utiliser:
+```sh
+    autopep8 <path-to-file> --select=E,W --max-line-length=120 --diff
+```
+
+En cas tu veux réparer le code style d'un fichier, tu peux utiliser:
+```sh
+    autopep8 <path-to-file> --max-line-length=120 --select=E,W 
+```
+
+Pour VSCode, le fichier `.vscode/settings.json` est configuré pour utiliser autopep8 à chaque sauvegarde.
+
+
+### Run
+```sh
+    source ./install/setup.sh
+    [insert command here]
+```

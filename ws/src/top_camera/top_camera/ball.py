@@ -1,33 +1,32 @@
 import cv2 as cv
 import numpy as np
-from zenith_camera_subscriber import *
 
 
 class Ball:
-    def __init__(self, id, timeStamp, X):
-        self.time0 = timeStamp
-        self.elapsedTime = 0
+    def __init__(self, id, timestamp, X):
+        self.time0 = timestamp
+        self.elapsed_time = 0
         self.score = 0
         self.position = X
         self.id = id
 
-    def get_score(self, robotPosition=(0, 0)):
+    def get_score(self, robot_position=(0, 0)):
         """
             Closer the ball is to the robot, higher the score
-            Input:
-                robotPosition: (x, y) tuple [in pixels, relative to the top left corner of the image]
-            Output:
-                score: float
+
+            :param robot_position: (x, y) tuple [in pixels, relative to the top left corner of the image]
+
+            :return: score: float
         """
         distance_coeff = 1
         time_coeff = 10
 
         distance = np.linalg.norm(
-            np.array(self.position) - np.array(robotPosition)
+            np.array(self.position) - np.array(robot_position)
         )
 
         self._score = 1 / (distance_coeff * distance +
-                           time_coeff * self.elapsedTime)
+                           time_coeff * self.elapsed_time)
 
         # print("distance: ", distance, "time_diff: ",
         #       time_diff, "score: ", self._score)
@@ -37,6 +36,7 @@ class Ball:
     def set_position(self, X):
         self.position = X
 
+<<<<<<< HEAD
     def set_time(self, timeStamp):
         self.elapsedTime = timeStamp-self.time0
 
@@ -238,3 +238,7 @@ class Path_Planner :
 
 t=TerrainBalls(0)
 t.Camera.destroy_node()
+=======
+    def set_time(self, timestamp):
+        self.elapsed_time = timestamp - self.time0
+>>>>>>> e3a06aecebd6ffd45c5ebee9aad6b8eacf45db23

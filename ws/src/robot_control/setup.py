@@ -1,11 +1,11 @@
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 
 package_name = 'robot_control'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name],
+    packages=find_namespace_packages(include=['robot_control.*']),
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
